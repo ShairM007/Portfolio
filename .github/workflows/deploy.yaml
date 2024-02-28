@@ -1,38 +1,76 @@
-name: ci/cd for react app
+# name: ci/cd for react app
+
+# on:
+#   push:
+#     branches: [ main ]
+#   workflow_dispatch:
+
+# permissions:
+#   contents: write 
+
+# jobs:
+  
+#   build-and-deploy:
+    
+#     runs-on: ubuntu-latest
+      
+#        steps:
+#         - name: checkout Repository
+#           uses: actions/checkout@v3
+
+#         - name: Setup Node.js
+#           uses: actions/setup-node@v3
+#             with:
+#               node-version: 18
+
+#         - name: Install Dependencies 
+#             run: npm install
+
+#         - name: Build Project  
+#             run: npm run build 
+        
+#         - name: Deploy To GitHub Pages 
+#           uses: JamesIves/github-pages-deploy-action@4.1.0
+#           with:
+#             branch: gh-pages
+#             folder: build 
+
+
+name: CI/CD for React App
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
-  contents: write 
+  contents: write
 
 jobs:
-    build-and-deploy:
-      runs-on: ubuntu-latest
-      
-      steps:
-        - name: checkout Repository
-          uses: actions/checkout@v3
+  build_and_deploy:
+    runs-on: ubuntu-latest
 
-        - name: Setup Node.js
-          uses: actions/setup-node@v3
-            with:
-              node-version: 18
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-        - name: Install Dependencies 
-            run: npm install
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
 
-        - name: Build Project  
-            run: npm run build 
-        
-        - name: Deploy To GitHub Pages 
-          uses: JamesIves/github-pages-deploy-action@4.1.0
-          with:
-            branch: gh-pages
-            folder: build 
+      - name: Install dependencies
+        run: npm install
 
+      - name: Build Project
+        run: npm run build
+        env:
+          REACT_APP_WELCOME_TEXT: ${{ vars.REACT_APP_WELCOME_TEXT }}
 
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.0
+        with:
+          branch: gh-pages
+          folder: build
 
     
